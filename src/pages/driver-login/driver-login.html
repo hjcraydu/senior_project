@@ -19,18 +19,25 @@
   <ion-list>
 
   <ion-item>
-    <ion-label floating>Username</ion-label>
-    <ion-input type="text"></ion-input>
+    <ion-label floating>Email</ion-label>
+    <ion-input type="text" [(ngModel)]="user.email"></ion-input>
   </ion-item>
 
   <ion-item>
     <ion-label floating>Password</ion-label>
-    <ion-input type="password"></ion-input>
+    <ion-input type="password" [(ngModel)]="user.password"></ion-input>
   </ion-item>
 
   </ion-list>
 
   <div padding>
-  <button ion-button color="primary" block>Sign In</button>
+  <button ion-button color="primary" (click)="login(user)" block >Sign In</button>
+  </div>
+
+  <div padding>
+    <p style="text-align: center;">
+      Drivers will need to register with their email.
+    </p>
+    <button ion-button color="primary" block (click) ="register()">Sign up</button>
   </div>
 </ion-content>

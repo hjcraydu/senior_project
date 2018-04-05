@@ -10,12 +10,42 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>customer-home</ion-title>
+    <ion-title>Request a Ride</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-This is the customer home page.
+  <ion-item>
+        <ion-label>Location</ion-label>
+        <ion-select [(ngModel)]="request.location" submitText="Select" cancelText="Cancel">
+          <ion-option value="blindPig">The Blind Pig</ion-option>
+          <ion-option value="levee">The Levee</ion-option>
+          <ion-option value="library">The Library</ion-option>
+          <ion-option value="proudLarry">Proud Larry's</ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+          <ion-label>Number of Passengers</ion-label>
+          <ion-select [(ngModel)]="request.numOfPassengers" submitText="Select" cancelText="Cancel">
+            <ion-option>1</ion-option>
+            <ion-option>2</ion-option>
+            <ion-option>3</ion-option>
+            <ion-option>4</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+            <ion-label>Payment Type</ion-label>
+            <ion-select [(ngModel)]="request.payment" submitText="Select" cancelText="Cancel">
+              <ion-option>Cash</ion-option>
+              <ion-option>Venmo</ion-option>
+            </ion-select>
+          </ion-item>
+
+        <div padding>
+          <button ion-button color="primary" block (click)="createRequest()">Submit</button>
+        </div>
 </ion-content>

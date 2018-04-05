@@ -17,5 +17,17 @@
 
 
 <ion-content padding>
-This is the driver home page.
+
+  <ion-list *ngFor="let user of users">
+        <ion-item (click)="openModal(user)">
+
+          <p>{{user.id}}</p>
+          <p>{{user.value.firstName}}</p>
+          <p>{{user.value.location}}</p>
+        </ion-item>
+    </ion-list>
+
+
+
+
 </ion-content>

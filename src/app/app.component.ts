@@ -4,13 +4,12 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
-import { CustomerRegistrationPage } from '../pages/customer-registration/customer-registration';
+import { CustomerDriverRegistrationPage } from '../pages/customer-driver-registration/customer-driver-registration';
 import { CustomerLoginPage } from '../pages/customer-login/customer-login';
 import { DriverLoginPage } from '../pages/driver-login/driver-login';
 import { CustomerHomePage } from '../pages/customer-home/customer-home';
 import { DriverHomePage } from '../pages/driver-home/driver-home';
 
-import firebase from 'firebase';
 
 
 @Component({
@@ -19,7 +18,8 @@ import firebase from 'firebase';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  //rootPage: any = HomePage;
+  //Eventually change back to HomePage!!!
+  rootPage: any = CustomerLoginPage;
 
   pages: Array<{ title: string, component: any }>;
 
@@ -29,32 +29,16 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
-      { title: 'Customer Registration', component: CustomerRegistrationPage },
+      { title: 'CustomerDriver Registration', component: CustomerDriverRegistrationPage },
       { title: 'Customer Login', component: CustomerLoginPage },
       { title: 'Driver Login', component: DriverLoginPage },
       { title: 'Driver Home', component: DriverHomePage },
       { title: 'Customer Home', component: CustomerHomePage }
     ];
 
-    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
-  if (!user) {
-    this.rootPage = 'CustomerLoginPage';
-    unsubscribe();
-  } else {
-    this.rootPage = HomePage;
-    unsubscribe();
   }
-});
 
-var config = {
-  apiKey: 'AIzaSyAkoMka7yjL7R4zCeiZtVbUdU5cXavaSBY',
-  authDomain: 'senior-project-f7553.firebaseapp.com',
-  databaseURL: 'https://senior-project-f7553.firebaseio.com',
-  storageBucket: 'senior-project-f7553',
-  messagingSenderId: '782008930652'
-};
-firebase.initializeApp(config);
-  }
+
 
   initializeApp() {
     this.platform.ready().then(() => {
