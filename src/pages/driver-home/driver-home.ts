@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController, Modal } from 'ionic-angular';
-import { DriverHomePage } from '../driver-home/driver-home';
+import { IonicPage, NavController, NavParams, ModalController, Modal, AlertController, ToastController } from 'ionic-angular';
 import { CustomerModalPage } from '../customer-modal/customer-modal';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabase, FirebaseObjectObservable } from 'angularfire2/database';
-import * as firebase from 'firebase';
+import firebase from 'firebase';
+import { ChatPage } from '../chat/chat';
+import { DriverLoginPage } from '../driver-login/driver-login';
 
 /**
  * Generated class for the DriverHomePage page.
@@ -13,6 +12,8 @@ import * as firebase from 'firebase';
  * Ionic pages and navigation.
  */
 
+ 
+
 @IonicPage()
 @Component({
   selector: 'page-driver-home',
@@ -20,39 +21,96 @@ import * as firebase from 'firebase';
 })
 export class DriverHomePage {
 
-users = [];
 
-/*  const custRef = firebase.database().ref().child('User').orderByChild('type').equalTo('customer').on('value', function(snapshot) {
-    snapshot.forEach(function(child) {
-      var data = child.val();
-      console.log(data.firstName + ' ' + data.lastName + ' ' + data.location  );
-    });
-  }, function(error) {
-    // The Promise was rejected.
-    console.log('Error: ',error);
-});*/
+  requests = [];
+  userID = firebase.auth().currentUser.uid;
+  driver = {
+    driverID: "",
+    driverFirstName: "",
+    driverLastName: "",
+    userType: ""
+  };
 
-  constructor(private modalCtrl: ModalController, private afAuth: AngularFireAuth, private afDatabase: AngularFireDatabase, public navCtrl: NavController, public navParams: NavParams) {
-    firebase.database().ref().child(`User`).orderByChild('type').equalTo('customer').once( "value", ( snapshot )=>{
-              let result = snapshot.val(); //snapshot.val() gives key value pairs
-              //you can make object array to show data on html using *ngFor
-              for(let k in result){
-                  this.users.push({
-                     id : k, //gives key of each object
-                     value : result[k] //gives user values
-                  })
-              }
-           });
+  user = firebase.auth().currentUser.uid;
+
+  constructor( public toastCtrl: ToastController, public alertCtrl: AlertController, private modalCtrl: ModalController, public navCtrl: NavController, public navParams: NavParams) {
+ 
+    firebase.database().ref(`Rides`).once( "value", ( snapshot )=>{
+   
+                  snapshot.forEach( data => {
+                    
+                    this.requests.push({
+                      id: data.key,
+                      value: data.val()
+                    });
+                    
+                    return false;
+                   });
+                console.log(this.requests);
+              });
+            
+
+    firebase.database().ref().child(`User/` + this.userID).once( "value", ( snapshot )=>{
+      let result = snapshot.val();
+      this.driver.driverID = this.userID;
+      this.driver.driverFirstName = result.firstName;
+      this.driver.driverLastName = result.lastName;
+      this.driver.userType = result.type;
+      console.log(this.driver);
+      });
+
+      console.log(this.user);
   }
 
+  //function to open modal page that holds passenger's information
+  
   openModal(object){
-  let modalPage = this.modalCtrl.create('CustomerModalPage',object);
-  modalPage.onDidDismiss(data => {
-  });
-  modalPage.present();
+    var obj = {
+        driverID: this.driver.driverID,
+        driverFirstName: this.driver.driverFirstName, 
+        driverLastName: this.driver.driverLastName,
+        driverUserType: this.driver.userType,
+        rideID: object.id ,
+        passengerFirstName : object.value.firstName,
+        passengerLastName: object.value.lastName,
+        passengerLocation : object.value.location,
+        passengerPhone: object.value.phone,
+        timeOfRequest: object.value.timeOfRequest,
+        payment: object.value.payment,
+        numOfPassengers: object.value.numOfPassengers
+    }
+
+    console.log(obj);
+
+    let modalPage = this.modalCtrl.create('CustomerModalPage',obj);
+    modalPage.onDidDismiss(data => {
+    });
+
+    modalPage.present();
 }
-  ionViewDidLoad() {
+
+  refresh(){
+  
+    this.navCtrl.setRoot(this.navCtrl.getActive().component);
+  }
+
+  logoutUser(){
+    firebase.auth().signOut();
+    this.navCtrl.setRoot(DriverLoginPage);
+    let toast = this.toastCtrl.create({
+      message: 'User was successfully logged out.',
+      duration: 3000,
+      position: 'top'
+    });
+  
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+  
+    toast.present();
+  }
+
+  ionViewWillLoad() {
     console.log('ionViewDidLoad DriverHomePage');
   }
-
 }

@@ -6,28 +6,51 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
-    <ion-title>driver-home</ion-title>
+  <ion-navbar hideBackButton="true">
+      <ion-buttons>
+         <!-- <button ion-button (click)="refresh()">Refresh Page</button>-->
+         <button ion-button (click)="refresh()">
+         <ion-icon name="md-refresh"></ion-icon>
+        </button>
+        </ion-buttons>
+        <ion-buttons end>
+            <button ion-button (click)="logoutUser()">
+            Logout
+           </button>
+        </ion-buttons>
+    <ion-title></ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+    <h2 style="text-align: center;">Requests for Rides</h2>
+    <p style="text-align: center;">Please remember to refresh the page to see more requests!</p>
+    <ion-grid class="divTable minimalistBlack">
+      <ion-row class="divTableHeading">
+        <ion-col class="divTableHead">
+          Passenger's Name
+        </ion-col>
+        <ion-col class="divTableHead">
+          Time of Request
+        </ion-col>
+        <ion-col class="divTableHead">
+          Location
+        </ion-col>
+      </ion-row>
 
-  <ion-list *ngFor="let user of users">
-        <ion-item (click)="openModal(user)">
+      <ion-row (click)="openModal(request)" class="divTableBody" *ngFor="let request of requests">
+      <ion-col class="divTableCell">
+        {{request.value.firstName}} {{request.value.lastName}} 
+      </ion-col>
+      <ion-col class="divTableCell">
+        {{request.value.timeOfRequest}}
+      </ion-col>
+      <ion-col class="divTableCell">
+        {{request.value.location}}
+      </ion-col>
+      </ion-row>
 
-          <p>{{user.id}}</p>
-          <p>{{user.value.firstName}}</p>
-          <p>{{user.value.location}}</p>
-        </ion-item>
-    </ion-list>
-
-
-
-
+    </ion-grid>
 </ion-content>

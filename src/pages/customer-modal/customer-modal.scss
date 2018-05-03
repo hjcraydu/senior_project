@@ -1,3 +1,41 @@
 page-customer-modal {
+   
 
+    .modalContents {
+        border: 1px solid;
+        padding: 3%;
+        background-color: lightgrey;
+        color: black;
+        font-weight: 800;    
+    }
+    .headers {
+        border-bottom: 2px solid #7e7e7e;
+        //border-bottom: 50%;
+        text-align: left;
+        font-size: 1.5em;
+    }
+
+    .content {
+        //padding-bottom: 2%; 
+        padding-left: 3%;
+        font-size: 1em;
+        font-weight: 700;
+    }
+
+    .acceptButton {
+        background-color: rgb(0, 81, 128);
+        padding: 15px 78px;
+        font-weight: 900;
+    }
+    
+    .completeButton {
+        background-color: red;
+        padding: 15px 65px;
+        font-weight: 900;
+    }
+
+    .divButton {
+        text-align: center;
+        padding-top: 15px; 
+    }
 }

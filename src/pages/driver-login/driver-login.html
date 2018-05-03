@@ -16,28 +16,33 @@
 
 
 <ion-content padding>
+
+  <form [formGroup]="formgroup" (submit)="login(user)">
   <ion-list>
 
   <ion-item>
     <ion-label floating>Email</ion-label>
-    <ion-input type="text" [(ngModel)]="user.email"></ion-input>
+    <ion-input type="text" [(ngModel)]="user.email" formControlName="email" required></ion-input>
+  </ion-item>
+  <ion-item no-lines *ngIf="email.hasError('required') && email.touched">
+    <p style="text-size: 0.5em; color: red;">*Email is required</p>
   </ion-item>
 
   <ion-item>
     <ion-label floating>Password</ion-label>
-    <ion-input type="password" [(ngModel)]="user.password"></ion-input>
+    <ion-input type="password" [(ngModel)]="user.password" formControlName="password" required></ion-input>
+  </ion-item>
+  <ion-item no-lines *ngIf="password.hasError('required') && password.touched">
+    <p style="text-size: 0.5em; color: red;">*Password is required</p>
   </ion-item>
 
   </ion-list>
 
-  <div padding>
-  <button ion-button color="primary" (click)="login(user)" block >Sign In</button>
-  </div>
 
   <div padding>
-    <p style="text-align: center;">
-      Drivers will need to register with their email.
-    </p>
-    <button ion-button color="primary" block (click) ="register()">Sign up</button>
+
+    <button ion-button color="primary" block type="submit">Sign In</button>
   </div>
+</form>
+ 
 </ion-content>

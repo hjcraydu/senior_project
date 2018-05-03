@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "782008930652",
+    "firebase_url": "https://senior-project-f7553.firebaseio.com",
+    "project_id": "senior-project-f7553",
+    "storage_bucket": "senior-project-f7553.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782008930652:android:87904fc9ec50009e",
+        "android_client_info": {
+          "package_name": "com.unchainedPedicabs.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "782008930652-rehp7apn5qggsnrdhbhmpgf3t4qorga9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFUkJ7rkw719SfLHTpRbQjEbkpEV9MWgc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

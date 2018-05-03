@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { FormControl, FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { User } from '../../models/user';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireDatabase } from 'angularfire2/database';
+import firebase from 'firebase';
+import { CustomerLoginPage } from '../customer-login/customer-login';
 import { CustomerHomePage } from '../customer-home/customer-home';
-import { HomePage } from '../home/home';
-
 /**
  * Generated class for the CustomerDriverRegistrationPage page.
  *
@@ -20,80 +19,61 @@ import { HomePage } from '../home/home';
 })
 export class CustomerDriverRegistrationPage {
 
+
   user = {} as User;
 
-  public empCode: string = 'UnchainedPedicabs2018';
+  myForm: FormGroup;
+  firstName: AbstractControl;
+  lastName: AbstractControl;
+  email: AbstractControl;
+  password: AbstractControl;
+  phone: AbstractControl;
 
-  constructor(private toastCtrl: ToastController, private alertCtrl: AlertController, private afAuth: AngularFireAuth, private afDatabase: AngularFireDatabase, public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public toastCtrl: ToastController, public fb: FormBuilder, private alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
+    this.myForm = this.fb.group({
+      firstName : ['',Validators.compose([Validators.required, Validators.minLength(1)])],
+      lastName : ['', Validators.compose([Validators.required, Validators.minLength(1)])],
+      email : ['', Validators.required],
+      password : ['', Validators.compose([Validators.required, Validators.minLength(8)])],
+      phone : ['', Validators.required],
+    })
+
+    this.firstName = this.myForm.controls['firstName'];
+    this.lastName = this.myForm.controls['lastName'];
+    this.email = this.myForm.controls['email'];
+    this.password = this.myForm.controls['password'];
+    this.phone = this.myForm.controls['phone'];
   }
-
-/*  doPrompt() {
-
-  let alert = this.alertCtrl.create({
-    title: 'Please enter the employee code',
-    inputs: [
-      {
-        name: 'code',
-        placeholder: 'Code'
-      }
-    ],
-    buttons: [
-      {
-        text: 'Cancel',
-        role: 'cancel',
-        handler: data => {
-          console.log('Cancel clicked');
-        }
-      },
-      {
-        text: 'Enter',
-        handler: data => {
-          if (User.isValid(data.username, data.password)) {
-            // logged in!
-          } else {
-            // invalid login
-            return false;
-          }
-        }
-      }
-    ]
-  });
-  alert.present();
-}*/
-
-presentToast() {
-  let toast = this.toastCtrl.create({
-    message: 'User was added successfully. Please proceed to login.',
-    duration: 3000,
-    position: 'top'
-  });
-
-  toast.onDidDismiss(() => {
-    console.log('Dismissed toast');
-  });
-
-  toast.present();
-}
 
    async register(user: User) {
-    try {
-      const result = await this.afAuth.auth.createUserWithEmailAndPassword(user.email, user.password);
-      console.log(result);
+    var id : string;
+      //uses Firebase's Authentication Services to store email and password
+      firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+      .then(response => {
+        id=response.uid;
+        //creates user node with user's information
+        this.user.type = "customer"
+        firebase.database().ref().child(`User/${id}`).set(this.user)
+        .then(() => this.navCtrl.setRoot(CustomerLoginPage));
+    }).catch(error => {
+      console.log("Error registering user",error);
+    });
 
-    }
-    catch (e) {
-      console.error(e);
-    }
-
-
-
-    this.afAuth.authState.take(1).subscribe(auth =>{
-        this.afDatabase.object(`User/${auth.uid}`).set(this.user)
-          .then(() => this.navCtrl.setRoot(HomePage));
-      })
-
-
+    let toast = this.toastCtrl.create({
+      message: 'User was created successfully. Please proceed to login.',
+      duration: 3000,
+      position: 'top'
+    });
+  
+    toast.onDidDismiss(() => {
+      console.log('Dismissed toast');
+    });
+  
+    toast.present();
   }
+  
+
+  
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CustomerDriverRegistrationPage');

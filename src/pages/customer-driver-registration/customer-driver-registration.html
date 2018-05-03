@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <!--
   Generated template for the userRegistrationPage page.
-
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
@@ -17,43 +16,55 @@
 
 <ion-content padding>
 
+  <form [formGroup]="myForm" (submit)="register(user)">
+    <ion-list>
   <ion-item>
     <ion-label floating>First Name</ion-label>
-    <ion-input type="text" [(ngModel)]="user.firstName"></ion-input>
+    <ion-input type="text" [(ngModel)]="user.firstName" formControlName="firstName" value="" required></ion-input>
   </ion-item>
+  <ion-item no-lines *ngIf="!myForm.controls.firstName.valid && myForm.controls.firstName.dirty">
+      <p style="text-size: 0.5em; color: red;">*Please enter a valid first name</p>
+    </ion-item>
 
   <ion-item>
     <ion-label floating>Last Name</ion-label>
-    <ion-input type="text" [(ngModel)]="user.lastName"></ion-input>
+    <ion-input type="text" [(ngModel)]="user.lastName" formControlName="lastName" value="" required></ion-input>
   </ion-item>
+  <ion-item no-lines *ngIf="!myForm.controls.lastName.valid && myForm.controls.lastName.dirty">
+      <p style="text-size: 0.5em; color: red;">*Please enter a valid last name</p>
+    </ion-item>
 
   <ion-item>
     <ion-label floating>Mobile Phone Number</ion-label>
-    <ion-input type="tel" [(ngModel)]="user.phone"></ion-input>
+    <ion-input type="number" [(ngModel)]="user.phone" formControlName="phone" value="" maxlength="10" minlength="10" required></ion-input>
   </ion-item>
+  <ion-item no-lines *ngIf="!myForm.controls.phone.valid && myForm.controls.phone.dirty">
+      <p style="text-size: 0.5em; color: red;">*Please enter a valid mobile number (ex. 0000000000) </p>
+    </ion-item>
 
   <ion-item>
     <ion-label floating>Email</ion-label>
-    <ion-input type="text" [(ngModel)]="user.email"></ion-input>
+    <ion-input type="text" [(ngModel)]="user.email" formControlName="email" value="" pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})" required ></ion-input>
   </ion-item>
+  <ion-item no-lines *ngIf="!myForm.controls.email.valid && myForm.controls.email.dirty">
+      <p style="text-size: 0.5em; color: red;">*Please enter a valid email (ex. email@email.com)</p>
+    </ion-item>
 
   <ion-item>
     <ion-label floating>Password</ion-label>
-    <ion-input type="text" [(ngModel)]="user.password"></ion-input>
+    <ion-input type="text" [(ngModel)]="user.password" formControlName="password" required></ion-input>
   </ion-item>
+  <ion-item no-lines *ngIf="!myForm.controls.password.valid && myForm.controls.password.dirty">
+      <p style="text-size: 0.5em; color: red;">*Please enter a valid password</p>
+    </ion-item>
+  </ion-list>
+    <div padding>
+        <button ion-button color="primary" block type="submit" [disabled]="!myForm.valid">Register</button>
+      </div>
+  </form>
 
 
-  <ion-item>
-    <ion-label>Please select if you are a passenger or driver</ion-label>
-    <ion-select [(ngModel)]="user.type">
-      <ion-option value="customer">Passenger</ion-option>
-      <ion-option value="driver">Driver</ion-option>
-    </ion-select>
-  </ion-item>
-
-
-  <div padding>
-    <button ion-button color="primary" block (click)="register(user)" (click)="presentToast()">Register</button>
-  </div>
+  
 
 </ion-content>
+

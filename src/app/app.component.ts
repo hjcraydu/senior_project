@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, NavController, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
@@ -9,7 +9,8 @@ import { CustomerLoginPage } from '../pages/customer-login/customer-login';
 import { DriverLoginPage } from '../pages/driver-login/driver-login';
 import { CustomerHomePage } from '../pages/customer-home/customer-home';
 import { DriverHomePage } from '../pages/driver-home/driver-home';
-
+import { ChatPage } from '../pages/chat/chat';
+import firebase from 'firebase';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   //Eventually change back to HomePage!!!
-  rootPage: any = CustomerLoginPage;
+  rootPage: any = HomePage;
 
   pages: Array<{ title: string, component: any }>;
 
@@ -29,12 +30,11 @@ export class MyApp {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
-      { title: 'CustomerDriver Registration', component: CustomerDriverRegistrationPage },
       { title: 'Customer Login', component: CustomerLoginPage },
-      { title: 'Driver Login', component: DriverLoginPage },
-      { title: 'Driver Home', component: DriverHomePage },
-      { title: 'Customer Home', component: CustomerHomePage }
+      { title: 'Driver Login', component: DriverLoginPage }
     ];
+
+    
 
   }
 

@@ -1,7 +1,7 @@
-import FirebaseObjectObservable from 'angularfire2/database';
 export interface Request {
-  //name: FirebaseObjectObservable<any>;
-//  phone: FirebaseObjectObservable<any>;
+  userID: string;
+  name: string;
+  phone: string;
   location: string;
   numOfPassengers: string;
   payment: string;

@@ -7,9 +7,11 @@
 <ion-header>
 
   <ion-navbar>
-    <button ion-button menuToggle>
-      <ion-icon name="menu"></ion-icon>
-    </button>
+    <ion-buttons end>
+        <button ion-button (click)="logoutUser()">
+        Logout
+       </button>
+    </ion-buttons>
     <ion-title>Request a Ride</ion-title>
   </ion-navbar>
 
@@ -17,35 +19,44 @@
 
 
 <ion-content padding>
-  <ion-item>
+  <h5>Please select your location, number of passengers, and payment type.</h5>
+  <form [formGroup]="myGroup" (submit)="createRequest(request)">
+  <ion-item class="fields">
         <ion-label>Location</ion-label>
-        <ion-select [(ngModel)]="request.location" submitText="Select" cancelText="Cancel">
-          <ion-option value="blindPig">The Blind Pig</ion-option>
-          <ion-option value="levee">The Levee</ion-option>
-          <ion-option value="library">The Library</ion-option>
-          <ion-option value="proudLarry">Proud Larry's</ion-option>
+        <ion-select [(ngModel)]="request.location" submitText="Select" cancelText="Cancel" formControlName="location">
+          <ion-option value="The Blind Pig">The Blind Pig</ion-option>
+          <ion-option value="The Levee">The Levee</ion-option>
+          <ion-option value="The Library">The Library</ion-option>
+          <ion-option value="Proud Larry's">Proud Larry's</ion-option>
+          <ion-option value="Rooster's">Rooster's Blues House</ion-option>
+          <ion-option value="Funky's">Funky's</ion-option>
+          <ion-option value="Rafters">Rafters</ion-option>
+          <ion-option value="Snackbar">Snackbar</ion-option>
         </ion-select>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="fields">
           <ion-label>Number of Passengers</ion-label>
-          <ion-select [(ngModel)]="request.numOfPassengers" submitText="Select" cancelText="Cancel">
-            <ion-option>1</ion-option>
-            <ion-option>2</ion-option>
-            <ion-option>3</ion-option>
-            <ion-option>4</ion-option>
+          <ion-select [(ngModel)]="request.numOfPassengers" submitText="Select" cancelText="Cancel" formControlName="numOfPassengers">
+            <ion-option>1 passenger</ion-option>
+            <ion-option>2 passengers</ion-option>
+            <ion-option>3 passengers</ion-option>
+            <ion-option>4 passengers</ion-option>
           </ion-select>
         </ion-item>
+        
 
-        <ion-item>
+        <ion-item class="fields">
             <ion-label>Payment Type</ion-label>
-            <ion-select [(ngModel)]="request.payment" submitText="Select" cancelText="Cancel">
+            <ion-select [(ngModel)]="request.payment" submitText="Select" cancelText="Cancel" formControlName="payment" >
               <ion-option>Cash</ion-option>
               <ion-option>Venmo</ion-option>
             </ion-select>
           </ion-item>
+          
 
-        <div padding>
-          <button ion-button color="primary" block (click)="createRequest()">Submit</button>
+        <div class="submitButton" padding>
+          <button id="submitButton" ion-button color="primary" block type="submit" [disabled]="!myGroup.valid">Submit</button>
         </div>
+      </form>
 </ion-content>

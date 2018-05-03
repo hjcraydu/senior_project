@@ -6,8 +6,8 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>CustomerModalPage</ion-title>
+  <ion-navbar class="navBar">
+    <ion-title style="text-align: center;">{{passengerFirstName}} {{passengerLastName}}</ion-title>
     <ion-buttons end>
       <button ion-button (click)="closeModal()">Close</button>
     </ion-buttons>
@@ -17,5 +17,40 @@
 
 
 <ion-content padding>
-  <p></p>
+  <ion-list class="modalContents" in-line>
+    <ion-label class="headers">
+        Time of Request
+    </ion-label>
+    <ion-item no-lines class="content">{{ passengerTimeofRequest }}</ion-item>
+    <ion-label class="headers">
+        Passenger Name
+      </ion-label>
+      <ion-item no-lines class="content">{{ passengerFirstName }} {{passengerLastName }}</ion-item>
+      <ion-label class="headers">
+        Number of Passengers
+      </ion-label>
+      <ion-item no-lines class="content">{{ passengerNumOfPassengers }}</ion-item>
+      <ion-label class="headers">
+        Passenger's Location
+      </ion-label>
+      <ion-item no-lines class="content">{{ passengerLocation }}</ion-item>
+      <ion-label class="headers">
+        Passenger's Phone Number
+      </ion-label>
+      <ion-item no-lines class="content">{{ passengerPhone }}</ion-item>
+      <ion-label class="headers">
+        Payment Type
+      </ion-label>
+      <ion-item no-lines class="content">{{ passengerPayment }}</ion-item>
+</ion-list>
+
+<div class="divButton" width="60">
+  <button class="acceptButton" ion-button color = "primary" (click)="acceptRequest(passenger)">Accept Request</button>
+</div>
+
+<div class="divButton" width="60">
+    <button class="completeButton" ion-button color = "primary" (click)="completeRide(passenger)" [disabled]="!acceptButtonPressed">Mark as Completed</button>
+  </div>
+
+
 </ion-content>
