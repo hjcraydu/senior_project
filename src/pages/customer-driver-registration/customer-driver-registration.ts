@@ -46,30 +46,50 @@ export class CustomerDriverRegistrationPage {
   }
 
    async register(user: User) {
-    var id : string;
-      //uses Firebase's Authentication Services to store email and password
-      firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
-      .then(response => {
-        id=response.uid;
-        //creates user node with user's information
-        this.user.type = "customer"
-        firebase.database().ref().child(`User/${id}`).set(this.user)
-        .then(() => this.navCtrl.setRoot(CustomerLoginPage));
-    }).catch(error => {
-      console.log("Error registering user",error);
-    });
 
-    let toast = this.toastCtrl.create({
-      message: 'User was created successfully. Please proceed to login.',
-      duration: 3000,
-      position: 'top'
+    let alert = this.alertCtrl.create({
+      title: 'Are you sure?',
+      message: 'Before registering, check your information!',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Register',
+          handler: () => {
+            console.log('Register clicked');
+            //uses Firebase's Authentication Services to store email and password
+            firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+            .then(response => {
+              //creates user node with user's information
+              //this.user.type = "customer"
+              firebase.database().ref().child(`User/${response.uid}`).set({email: this.user.email, firstName: this.user.firstName, lastName: this.user.lastName, phone: this.user.phone, type: "customer"})
+              .then(() => this.navCtrl.setRoot(CustomerLoginPage));
+          }).catch(error => {
+            console.log("Error registering user",error);
+          });
+
+          let toast = this.toastCtrl.create({
+            message: 'User was created successfully. Please proceed to login.',
+            duration: 3000,
+            position: 'top'
+          });
+        
+          toast.onDidDismiss(() => {
+            console.log('Dismissed toast');
+          });
+        
+          toast.present();
+          }
+        }
+      ]
     });
-  
-    toast.onDidDismiss(() => {
-      console.log('Dismissed toast');
-    });
-  
-    toast.present();
+    alert.present();
+      
   }
   
 

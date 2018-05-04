@@ -82,7 +82,7 @@ export class CustomerModalPage {
             //console.log(id);
             firebase.database().ref(`Rides/` + id).once('value', function(snap) {
               console.log(id);
-              firebase.database().ref('Rides in Progress/').child(id).set(snap.val(), function(error) {
+              firebase.database().ref('Rides in Progress/').child(id).update(snap.val(), function(error) {
                 if(!error){
                   console.log(id);
                   firebase.database().ref(`Rides/` + id).remove();
@@ -172,7 +172,7 @@ export class CustomerModalPage {
             });
           
             toast.present();
-            this.navCtrl.push(DriverHomePage);
+            this.navCtrl.setRoot(DriverHomePage);
           }
         }
       ]

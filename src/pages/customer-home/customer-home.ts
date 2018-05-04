@@ -78,7 +78,7 @@ createRequest(request: Request) {
       );
       let alert = this.alertCtrl.create({
         title: 'Please Wait',
-        message: 'Please wait for a driver to join the chat before sending a message!',
+        message: 'Please wait for a driver to join the chat!',
         buttons: [
           {
             text: 'Close',
