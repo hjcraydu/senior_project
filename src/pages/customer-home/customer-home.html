@@ -19,6 +19,7 @@
 
 
 <ion-content padding>
+
   <h5>Please select your location, number of passengers, and payment type.</h5>
   <form [formGroup]="myGroup" (submit)="createRequest(request)">
   <ion-item class="fields">
@@ -59,4 +60,5 @@
           <button id="submitButton" ion-button color="primary" block type="submit" [disabled]="!myGroup.valid">Submit</button>
         </div>
       </form>
+      
 </ion-content>

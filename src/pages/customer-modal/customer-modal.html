@@ -17,6 +17,7 @@
 
 
 <ion-content padding>
+
   <ion-list class="modalContents" in-line>
     <ion-label class="headers">
         Time of Request
@@ -42,15 +43,14 @@
         Payment Type
       </ion-label>
       <ion-item no-lines class="content">{{ passengerPayment }}</ion-item>
-</ion-list>
+  </ion-list>
 
-<div class="divButton" width="60">
-  <button class="acceptButton" ion-button color = "primary" (click)="acceptRequest(passenger)">Accept Request</button>
-</div>
-
-<div class="divButton" width="60">
-    <button class="completeButton" ion-button color = "primary" (click)="completeRide(passenger)" [disabled]="!acceptButtonPressed">Mark as Completed</button>
+  <div class="divButton" width="60">
+    <button class="acceptButton" ion-button color = "primary" (click)="acceptRequest(passenger)">Accept Request</button>
   </div>
 
+  <div class="divButton" width="60">
+      <button class="completeButton" ion-button color = "primary" (click)="completeRide(passenger)" [disabled]="!acceptButtonPressed">Mark as Completed</button>
+  </div>
 
 </ion-content>

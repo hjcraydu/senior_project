@@ -23,8 +23,10 @@ import * as firebase from 'firebase';
 })
 export class DriverLoginPage {
 
+  //user object
   user = {} as User;
 
+  //form validation variables
   formgroup: FormGroup;
   email: AbstractControl;
   password: AbstractControl;
@@ -37,71 +39,73 @@ export class DriverLoginPage {
       password: ['', Validators.required]
     });
 
+    //assigns form validation variables to variables
     this.email = this.formgroup.controls['email'];
     this.password = this.formgroup.controls['password'];
   }
-
+  
+  //method to login
   async login(user: User)
-{
-  if(user.email == null || user.password == null){
-    //displays alert if inputs are null
-    let alert = this.alertCtrl.create({
-    title: 'No email/password entered!',
-    subTitle: 'Please enter your email/password.',
-    buttons: ['Dismiss']
-  });
-  alert.present();
-  }else{
-  //signs in user if their information exists and is correct
-  this.afAuth.auth.signInWithEmailAndPassword(user.email,user.password)
-  .then(user => {
-    firebase.database().ref('User/' + user.uid).once('value', snapshot =>{
-      if(snapshot.val().type == 'driver'){
-        this.navCtrl.setRoot(DriverHomePage);
-      } else {
-        let error = this.alertCtrl.create({
-          title: 'Wrong User Login',
-          subTitle: 'Please make sure that you are using the right login portal!',
-          buttons: [
-            {
+  {
+    if(user.email == null || user.password == null){
+      //displays alert if inputs are null
+      let alert = this.alertCtrl.create({
+        title: 'No email/password entered!',
+        subTitle: 'Please enter your email/password.',
+        buttons: ['Dismiss']
+       });
+      alert.present();
+    }else{
+    //signs in user if their information exists and is correct
+    this.afAuth.auth.signInWithEmailAndPassword(user.email,user.password)
+    .then(user => {
+      firebase.database().ref('User/' + user.uid).once('value', snapshot =>{
+        if(snapshot.val().type == 'driver'){
+          this.navCtrl.setRoot(DriverHomePage);
+        } else {
+          //error to display if user is trying to log into the wrong login interface
+            let error = this.alertCtrl.create({
+              title: 'Wrong User Login',
+              subTitle: 'Please make sure that you are using the right login portal!',
+              buttons: [
+                {
+                  text: 'Dismiss',
+                  role: 'dismis',
+                  handler: () => {
+                    console.log('Cancel clicked');
+                    this.user.email = "";
+                    this.user.password="";
+                  }
+                }
+              ]
+            });
+           error.present();
+           this.navCtrl.setRoot(DriverLoginPage);
+        }
+      })
+    }, err =>{
+      //error mesage if inputs are incorrect
+      let error = this.alertCtrl.create({
+        title: 'Email or password is incorrect!',
+        subTitle: 'Please enter correct email and password.',
+        buttons: [
+          {
             text: 'Dismiss',
             role: 'dismis',
-          handler: () => {
-            console.log('Cancel clicked');
-            this.user.email = "";
-             this.user.password="";
-          }}
+            handler: () => {
+              console.log('Cancel clicked');
+              //resets inputs
+              this.user.email = "";
+              this.user.password="";
+            }
+          }
         ]
-        });
-        error.present();
-        this.navCtrl.setRoot(DriverLoginPage);
-      }
-    })
-  }, err =>{
-    let error = this.alertCtrl.create({
-      title: 'Email or password is incorrect!',
-      subTitle: 'Please enter correct email and password.',
-      buttons: [
-        {
-        text: 'Dismiss',
-        role: 'dismis',
-      handler: () => {
-        console.log('Cancel clicked');
-        this.user.email = "";
-    this.user.password="";
-      }}]
       });
-    error.present();
-  })
-}
-}
-
-clear(){
-  this.user.email = "";
-  this.user.password="";
+      error.present();
+    })
+  }
 }
     ionViewDidLoad() {
       console.log('ionViewDidLoad DriverLoginPage');
     }
-
-  }
+ }

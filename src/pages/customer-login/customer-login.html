@@ -17,39 +17,37 @@
 
 <ion-content padding>
 
-<form [formGroup]="formgroup" (submit)="login(user)">
-  <ion-list>
+  <form [formGroup]="formgroup" (submit)="login(user)">
+    <ion-list>
 
-  <ion-item>
-    <ion-label floating>Email</ion-label>
-    <ion-input type="text" [(ngModel)]="user.email" formControlName="email" required></ion-input>
-  </ion-item>
-  <ion-item no-lines *ngIf="email.hasError('required') && email.touched">
-    <p style="text-size: 0.5em; color: red;">*Email is required</p>
-  </ion-item>
+    <ion-item>
+      <ion-label floating>Email</ion-label>
+      <ion-input type="text" [(ngModel)]="user.email" formControlName="email" required></ion-input>
+    </ion-item>
+    <ion-item no-lines *ngIf="email.hasError('required') && email.touched">
+      <p style="text-size: 0.5em; color: red;">*Email is required</p>
+    </ion-item>
 
-  <ion-item>
-    <ion-label floating>Password</ion-label>
-    <ion-input type="password" [(ngModel)]="user.password" formControlName="password" required></ion-input>
-  </ion-item>
-  <ion-item no-lines *ngIf="password.hasError('required') && password.touched">
-    <p style="text-size: 0.5em; color: red;">*Password is required</p>
-  </ion-item>
+    <ion-item>
+      <ion-label floating>Password</ion-label>
+      <ion-input type="password" [(ngModel)]="user.password" formControlName="password" required></ion-input>
+    </ion-item>
+    <ion-item no-lines *ngIf="password.hasError('required') && password.touched">
+      <p style="text-size: 0.5em; color: red;">*Password is required</p>
+    </ion-item>
 
-</ion-list>
+  </ion-list>
 
-<div padding>
+  <div padding>
+    <button ion-button color="primary" type="submit" block >Sign In</button>
+  </div>
+  </form>
 
-  <button ion-button color="primary" type="submit" block >Sign In</button>
-</div>
-</form>
-
-<div padding>
-  <p style="text-align: center;">
-    Don't have an account? Sign up now!
-  </p>
-  <button ion-button color="primary" block (click)="register()">Sign up</button>
-</div>
-
+  <div padding>
+    <p style="text-align: center;">
+      Don't have an account? Sign up now!
+    </p>
+    <button ion-button color="primary" block (click)="register()">Sign up</button>
+  </div>
 
 </ion-content>

@@ -21,9 +21,11 @@ import { DriverLoginPage } from '../driver-login/driver-login';
 })
 export class DriverHomePage {
 
-
+  //array to store request information
   requests = [];
+  //user's unique id
   userID = firebase.auth().currentUser.uid;
+  //object
   driver = {
     driverID: "",
     driverFirstName: "",
@@ -31,39 +33,32 @@ export class DriverHomePage {
     userType: ""
   };
 
-  user = firebase.auth().currentUser.uid;
-
   constructor( public toastCtrl: ToastController, public alertCtrl: AlertController, private modalCtrl: ModalController, public navCtrl: NavController, public navParams: NavParams) {
  
-    firebase.database().ref(`Rides`).once( "value", ( snapshot )=>{
-   
-                  snapshot.forEach( data => {
-                    
-                    this.requests.push({
-                      id: data.key,
-                      value: data.val()
-                    });
-                    
-                    return false;
-                   });
-                console.log(this.requests);
-              });
-            
-
+    //gets request information from database
+    firebase.database().ref(`Rides`).on( "value", ( snapshot )=>{
+      this.requests =[];
+      //loops through each request
+      snapshot.forEach( data => {
+        this.requests.push({
+          id: data.key,
+          value: data.val()
+        });
+        return false;
+      });
+    });
+              
+    //gets drivers information from database
     firebase.database().ref().child(`User/` + this.userID).once( "value", ( snapshot )=>{
       let result = snapshot.val();
       this.driver.driverID = this.userID;
       this.driver.driverFirstName = result.firstName;
       this.driver.driverLastName = result.lastName;
       this.driver.userType = result.type;
-      console.log(this.driver);
       });
-
-      console.log(this.user);
   }
 
   //function to open modal page that holds passenger's information
-  
   openModal(object){
     var obj = {
         driverID: this.driver.driverID,
@@ -80,23 +75,23 @@ export class DriverHomePage {
         numOfPassengers: object.value.numOfPassengers
     }
 
-    console.log(obj);
-
     let modalPage = this.modalCtrl.create('CustomerModalPage',obj);
     modalPage.onDidDismiss(data => {
     });
-
     modalPage.present();
 }
 
+  //method to refresh page
   refresh(){
-  
     this.navCtrl.setRoot(this.navCtrl.getActive().component);
   }
 
+  //method to logout user
   logoutUser(){
+    //firebase authentication sign out
     firebase.auth().signOut();
     this.navCtrl.setRoot(DriverLoginPage);
+    //presents message that user was logged out
     let toast = this.toastCtrl.create({
       message: 'User was successfully logged out.',
       duration: 3000,

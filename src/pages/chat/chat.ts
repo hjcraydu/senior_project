@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ToastController, LoadingController } from 'ionic-angular';
-import { DriverHomePage } from '../driver-home/driver-home';
+import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
 import { CustomerHomePage } from '../customer-home/customer-home';
 import firebase from 'firebase';
 /**
@@ -28,12 +27,12 @@ export class ChatPage {
   passengerID: string;
   userType: string;
 
-  constructor( public alertCtrl: AlertController, public loadCtrl: LoadingController, public toastCtrl: ToastController, public navCtrl: NavController, public navParams: NavParams) {
+  constructor( public alertCtrl: AlertController, public navCtrl: NavController, public navParams: NavParams) {
     //navParams values from previous page is stored
     this.username = this.navParams.get('username');
     this.rideID = this.navParams.get('requestID');
     this.userType = this.navParams.get('userType');
-    console.log(this.userType);
+
     //references database and creates a new child where messages can be stored
     this._chatSubscription = firebase.database().ref(`Rides in Progress/${this.rideID}/Messages`).on('value', snapshot => {
       let tmp = [];
@@ -42,7 +41,6 @@ export class ChatPage {
   				key: data.key,
   				username: data.val().username,
           message: data.val().message
-          //sendDate: Date()
         });
         return false;
        });
@@ -51,6 +49,7 @@ export class ChatPage {
     });
   }
 
+  //method to send messages between users
   send(){
     //sends the messages to the child Messages
     firebase.database().ref().child(`Rides in Progress/${this.rideID}/Messages`).push().set({
@@ -61,15 +60,12 @@ export class ChatPage {
     }).catch(() => {
       //some error message
     })
-
-    console.log(this.username, this.message);
-    
-    
     this.message = '';
-   }
+  }
 
-   closeChat(){
-
+  //method to close the chat room
+  closeChat(){
+    //alert is created to see if user wants to leave the chat
     let alert = this.alertCtrl.create({
       title: 'Leave the Chat',
       message: 'Are you sure?',
@@ -88,28 +84,28 @@ export class ChatPage {
             console.log('Leave clicked');
             this.navCtrl.pop();
           }
-  }]});
-  alert.present();
+        }
+      ]
+    });
+   alert.present();
   }
 
   ionViewDidLoad() {
+    //reference is made to database and "joined chat" message is sent
     firebase.database().ref().child(`Rides in Progress/${this.rideID}/Messages`).push().set({
       username: this.username,
       message: `${this.username} joined the chat`
     });
-    
     console.log('ionViewDidLoad ChatPage');
   }
 
   ionViewWillLeave(){
-    
+    //reference is made to database and "left chat" message is sent
     firebase.database().ref().child(`Rides in Progress/${this.rideID}/Messages`).push().set({
       username: this.username,
       message: `${this.username} left the chat`
     });
-   
     console.log('ionViewWillLeave ChatPage');
-   
   }
 
 }

@@ -44,11 +44,6 @@ page-chat {
 	    align-items: stretch;
 	}
 
-	/*ion-input{
-		padding-left: 15px;
-		font-size: 125%;
-	}*/
-
 	ion-toolbar {
 		margin: 0;
 		padding: 0!important;
@@ -64,34 +59,6 @@ page-chat {
 	.messageRight {
 		float: right;
 	}
-
-	/*.message.special .innerMessage .messageContent{
-		background: white;
-		display: inline-block;
-		padding: 0 10px;
-	}
-
-	.message.special .innerMessage:before{
-		content: '';
-		height: 2px;
-		background: #eee;
-		display: block;
-		top: 50%;
-		position: absolute;
-		left: 0;
-		width: 100%;
-		z-index: -1;
-	}
-
-	.message.special .innerMessage{
-		background: transparent;
-		color: black;
-		font-size: 80%;
-		width: 100%;
-		float: none;
-		text-align: center;
-		position: relative;
-	}*/
 
 	.messageFooter{
 		border-top: 0.01vw solid;
